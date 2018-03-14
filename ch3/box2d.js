@@ -20,6 +20,22 @@ function init(){
   createFloor();
 
   setupDebugDraw();
+  animate();
+}
+
+var timeStep = 1/60;
+
+// As per the Box2d manual, the suggested iteration count for Box2D is 8 for velocity and 3 for position
+var velocityIterations = 8;
+var positionIterations = 3;
+
+function animate(){
+  world.Step(timeStep, velocityIterations,positionIterations);
+  world.ClearForces();
+
+  world.DrawDebugData();
+
+  setTimeout(animate, timeStep);
 }
 
 function createFloor(){
@@ -45,7 +61,7 @@ function createFloor(){
 
 var context;
 function setupDebugDraw(){
-  context = document.getElementById('canvas').msGetInputContext('2d');
+  context = document.getElementById('canvas').getContext('2d');
 
   var debugDraw = new b2DebugDraw();
 
