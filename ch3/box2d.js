@@ -18,6 +18,10 @@ function init(){
   world = new b2World(gravity,allowSleep);
 
   createFloor();
+  // Create some bodies with simple shapes
+  createRectangularBody();
+  createCircularBody();
+  createSimplePolygonBody();
 
   setupDebugDraw();
   animate();
@@ -56,6 +60,69 @@ function createFloor(){
   fixtureDef.shape.SetAsBox(320/scale, 10/scale); // 640 pixels wide and 20 pixels tall
 
   var body = world.CreateBody(bodyDef);
+  var fixture = body.CreateFixture(fixtureDef);
+}
+
+function createRectangularBody(){
+  var bodyDef = new b2BodyDef;
+  bodyDef.type = b2Body.b2_dynamicBody;
+  bodyDef.position.x = 40/scale;
+  bodyDef.position.y = 100/scale;
+
+  var fixtureDef = new b2FixtureDef;
+  fixtureDef.density = 1.0;
+  fixtureDef.friction = 0.5;
+  fixtureDef.restitution = 0.3;
+
+  fixtureDef.shape = new b2PolygonShape;
+  fixtureDef.shape.SetAsBox(30/scale,50/scale);
+
+  var body = world.CreateBody(bodyDef);
+  var fixture = body.CreateFixture(fixtureDef);
+}
+
+function createCircularBody(){
+  var bodyDef = new b2BodyDef;
+  bodyDef.type = b2Body.b2_dynamicBody;
+  bodyDef.position.x = 130/scale;
+  bodyDef.position.y = 100/scale;
+
+  var fixtureDef = new b2FixtureDef;
+  fixtureDef.density = 1.0;
+  fixtureDef.friction = 0.5;
+  fixtureDef.restitution = 0.7;
+
+  fixtureDef.shape = new b2CircleShape(30/scale);
+
+  var body = world.CreateBody(bodyDef);
+  var fixture = body.CreateFixture(fixtureDef);
+}
+
+function createSimplePolygonBody(){
+  var bodyDef = new b2BodyDef;
+  bodyDef.type = b2Body.b2_dynamicBody;
+  bodyDef.position.x = 230/scale;
+  bodyDef.position.y = 50/scale;
+
+  var fixtureDef = new b2FixtureDef;
+  fixtureDef.density = 1.0;
+  fixtureDef.friction = 0.5;
+  fixtureDef.restitution = 0.2;
+
+  fixtureDef.shape = new b2PolygonShape;
+  // Create an array of b2Vec2 points in clockwise direction
+  var points = [
+    new b2Vec2(0,0),
+    new b2Vec2(40/scale,50/scale),
+    new b2Vec2(50/scale,100/scale),
+    new b2Vec2(-50/scale,100/scale),
+    new b2Vec2(-40/scale,50/scale),
+  ];
+  // Use SetAsArray to define the shape using the points array
+  fixtureDef.shape.SetAsArray(points,points.length);
+
+  var body = world.CreateBody(bodyDef);
+
   var fixture = body.CreateFixture(fixtureDef);
 }
 
